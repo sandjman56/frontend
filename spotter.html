@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Issue Spotter – LAWAgent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #0e1117;
+      color: #f0f0f0;
+      font-family: 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.1rem;
+      color: #b0b3b8;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: #1a1d24;
+      color: #e0e0e0;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(90deg, #0fa, #09f);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #0cf, #07f);
+    }
+    pre {
+      background-color: #1a1d24;
+      padding: 20px;
+      white-space: pre-wrap;
+      border-left: 4px solid #0fa;
+      border-radius: 6px;
+      margin-top: 30px;
+    }
+    a {
+      display: block;
+      margin-top: 30px;
+      color: #09f;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Issue Spotter</h1>
+  <p>Paste a legal document excerpt below:</p>
+
+  <textarea id="documentInput" placeholder="Enter complaint, motion, or demand letter..."></textarea>
+  <button onclick="submitText()">Spot Issues</button>
+
+  <h2>Spotted Issues:</h2>
+  <pre id="outputArea">Awaiting input...</pre>
+
+  <a href="index.html">← Back to Home</a>
+
+  <script>
+    async function submitText() {
+      const inputText = document.getElementById('documentInput').value;
+      const outputArea = document.getElementById('outputArea');
+      outputArea.textContent = "Analyzing...";
+
+      const response = await fetch('https://lawagentbackend.onrender.com/spot_issues', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText })
+      });
+
+      const data = await response.json();
+      outputArea.textContent = data.issues || data.detail || "Something went wrong.";
+    }
+  </script>
+</body>
+</html>
