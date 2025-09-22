@@ -4,55 +4,307 @@
   <meta charset="UTF-8">
   <title>LAWAgent – Legal Intelligence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top left, rgba(15, 170, 255, 0.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(0, 255, 170, 0.2), transparent 50%),
+        #05070d;
+      --card-bg: rgba(12, 16, 24, 0.85);
+      --text-primary: #f7f9fc;
+      --text-secondary: #a9b3c7;
+      --accent: linear-gradient(135deg, #05f, #0fa);
+      --accent-strong: linear-gradient(135deg, #00ffd0, #008cff);
+      --border-glow: rgba(15, 170, 255, 0.45);
+      --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: #0e1117;
-      color: #f0f0f0;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 40px;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 48px 24px;
     }
+
+    .surface {
+      position: relative;
+      width: min(960px, 100%);
+      padding: 48px clamp(32px, 4vw, 64px);
+      background: var(--card-bg);
+      border: 1px solid rgba(108, 118, 148, 0.2);
+      border-radius: 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-elevated);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .surface::before,
+    .surface::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0);
+      opacity: 0.55;
+      z-index: -1;
+    }
+
+    .surface::before {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(0, 153, 255, 0.25), transparent 60%);
+      top: -120px;
+      right: -120px;
+    }
+
+    .surface::after {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(0, 255, 170, 0.22), transparent 70%);
+      bottom: -160px;
+      left: -160px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .brand span {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(167, 177, 200, 0.7);
+      font-size: 0.75rem;
+    }
+
     h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
+      margin: 6px 0 0;
+      font-size: clamp(2.5rem, 5vw, 3.6rem);
+      letter-spacing: -0.03em;
     }
-    p {
-      font-size: 1.2rem;
-      color: #b0b3b8;
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(19, 27, 43, 0.8);
+      border: 1px solid rgba(15, 170, 255, 0.3);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 500;
     }
-    .services {
-      margin-top: 40px;
+
+    .hero {
+      display: grid;
+      gap: clamp(28px, 6vw, 48px);
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      align-items: center;
     }
-    .button {
-      margin-top: 20px;
-      display: inline-block;
-      padding: 14px 32px;
+
+    .hero p {
       font-size: 1.1rem;
-      color: white;
-      background: linear-gradient(90deg, #0fa, #09f);
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: background 0.3s ease;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin: 16px 0 0;
     }
-    .button:hover {
-      background: linear-gradient(90deg, #0cf, #07f);
+
+    .cta {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 28px;
+      border-radius: 999px;
+      border: none;
+      background-image: var(--accent);
+      color: #010409;
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.4s ease;
+      box-shadow: 0 12px 30px rgba(0, 170, 255, 0.25);
+    }
+
+    .cta svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .cta:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 18px 36px rgba(0, 170, 255, 0.32);
+      background-image: var(--accent-strong);
+    }
+
+    .cta:focus-visible {
+      outline: 3px solid rgba(0, 170, 255, 0.6);
+      outline-offset: 4px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-top: clamp(32px, 6vw, 48px);
+    }
+
+    .feature-card {
+      padding: 24px;
+      background: rgba(12, 16, 24, 0.7);
+      border: 1px solid rgba(96, 106, 133, 0.2);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(15, 170, 255, 0.4);
+      box-shadow: 0 12px 28px rgba(4, 15, 34, 0.45);
+    }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      background: rgba(15, 170, 255, 0.14);
+      color: #5cd6ff;
+      font-size: 1.4rem;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      margin-top: 12px;
+      margin-bottom: 0;
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: clamp(48px, 8vw, 72px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: rgba(168, 179, 205, 0.6);
+      font-size: 0.85rem;
+    }
+
+    footer span strong {
+      color: rgba(216, 228, 255, 0.7);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .badge {
+        align-self: flex-start;
+      }
+
+      .cta {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>LAWAgent</h1>
-  <p>AI-powered tools for legal professionals.</p>
+  <main class="surface">
+    <header>
+      <div class="brand">
+        <span>LAWAGENT</span>
+        <h1>Precision legal intelligence on demand</h1>
+      </div>
+      <div class="badge">AI-native workflows for legal teams</div>
+    </header>
 
-  <div class="services">
-    <h2>Available Services</h2>
-    <a href="spotter.html" class="button">🔍 Issue Spotter</a>
-  </div>
+    <section class="hero">
+      <div>
+        <p>
+          LAWAgent streamlines the way legal professionals identify risks, summarize matters, and craft responses.
+          Harness AI that understands legal nuance and delivers actionable insight—securely and instantly.
+        </p>
+        <a class="cta" href="spotter.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          Launch Issue Spotter
+        </a>
+      </div>
+      <div class="feature-card" style="border-style: dashed; border-color: rgba(92, 214, 255, 0.4); background: rgba(12,16,24,0.55);">
+        <div class="feature-icon" aria-hidden="true">⚖️</div>
+        <h3>Built for modern practices</h3>
+        <p>
+          Upload motions, briefs, or contract excerpts to uncover potential issues in seconds. LAWAgent adapts to your
+          practice area and compliance requirements.
+        </p>
+      </div>
+    </section>
+
+    <section class="feature-grid" aria-label="Key capabilities">
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">🔍</div>
+        <h3>AI Issue Spotting</h3>
+        <p>
+          Surface arguments and red flags before they escalate. Our models are tuned for legal language and citation
+          patterns.
+        </p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">🛡️</div>
+        <h3>Secure by Design</h3>
+        <p>
+          Keep confidential work product safe with privacy-first infrastructure and optional on-prem deployment.
+        </p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">⚡</div>
+        <h3>Workflow Integrations</h3>
+        <p>
+          Connect LAWAgent with your document management and case systems to automate intake, review, and reporting.
+        </p>
+      </article>
+    </section>
+
+    <footer>
+      <span><strong>Need more tools?</strong> Additional AI copilots and research accelerators are coming soon.</span>
+      <span>© <script>document.write(new Date().getFullYear());</script> LAWAgent. All rights reserved.</span>
+    </footer>
+  </main>
 </body>
 </html>

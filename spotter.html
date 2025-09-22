@@ -4,92 +4,306 @@
   <meta charset="UTF-8">
   <title>Issue Spotter – LAWAgent</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top right, rgba(0, 149, 255, 0.25), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(0, 255, 200, 0.18), transparent 50%),
+        #05070d;
+      --surface: rgba(12, 16, 24, 0.85);
+      --input-bg: rgba(10, 14, 22, 0.95);
+      --border: rgba(85, 105, 145, 0.35);
+      --text-primary: #f7f9fc;
+      --text-secondary: #9da7bf;
+      --accent: linear-gradient(135deg, #05f, #0fa);
+      --accent-strong: linear-gradient(135deg, #00ffd0, #008cff);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #0e1117;
-      color: #f0f0f0;
-      font-family: 'Helvetica Neue', sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
     }
+
+    main {
+      width: min(1120px, 100%);
+      display: grid;
+      gap: clamp(32px, 4vw, 48px);
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      background: var(--surface);
+      border: 1px solid rgba(120, 138, 180, 0.16);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 56px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header span {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(159, 174, 204, 0.7);
+    }
+
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      letter-spacing: -0.02em;
+      margin: 0;
     }
-    p {
-      font-size: 1.1rem;
-      color: #b0b3b8;
+
+    header p {
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
+
+    .quick-notes {
+      display: grid;
+      gap: 16px;
+      padding: 24px;
+      background: rgba(15, 21, 33, 0.65);
+      border: 1px solid rgba(94, 115, 158, 0.25);
+      border-radius: 20px;
+    }
+
+    .quick-notes strong {
+      color: rgba(92, 214, 255, 0.8);
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
     textarea {
       width: 100%;
-      height: 180px;
-      background: #1a1d24;
-      color: #e0e0e0;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 12px;
+      min-height: 220px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      border: 1px solid rgba(80, 104, 148, 0.3);
+      border-radius: 20px;
+      padding: 18px;
       font-size: 1rem;
-      margin-top: 20px;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
+
+    textarea:focus {
+      border-color: rgba(15, 170, 255, 0.6);
+      box-shadow: 0 0 0 4px rgba(15, 170, 255, 0.15);
+      outline: none;
+    }
+
     button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      color: white;
-      background: linear-gradient(90deg, #0fa, #09f);
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      border-radius: 999px;
       border: none;
-      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      background-image: var(--accent);
+      color: #010409;
       cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.35s ease;
+      box-shadow: 0 12px 32px rgba(15, 170, 255, 0.22);
     }
-    button:hover {
-      background: linear-gradient(90deg, #0cf, #07f);
+
+    button svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.1;
     }
+
+    button:hover:not([disabled]) {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px rgba(15, 170, 255, 0.3);
+      background-image: var(--accent-strong);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+      box-shadow: none;
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(0, 170, 255, 0.55);
+      outline-offset: 4px;
+    }
+
+    .output {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .output label {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
     pre {
-      background-color: #1a1d24;
-      padding: 20px;
+      margin: 0;
+      background: rgba(15, 21, 33, 0.75);
+      border: 1px solid rgba(92, 120, 168, 0.28);
+      border-radius: 20px;
+      padding: 22px;
+      color: var(--text-primary);
       white-space: pre-wrap;
-      border-left: 4px solid #0fa;
-      border-radius: 6px;
-      margin-top: 30px;
+      line-height: 1.7;
+      min-height: 120px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
-    a {
-      display: block;
-      margin-top: 30px;
-      color: #09f;
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    nav a {
+      color: rgba(92, 214, 255, 0.85);
       text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
-    a:hover {
+
+    nav a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 28px;
+      }
+
+      button {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Issue Spotter</h1>
-  <p>Paste a legal document excerpt below:</p>
+  <main>
+    <section>
+      <header>
+        <span>LAWAGENT</span>
+        <h1>Issue Spotter</h1>
+        <p>Paste pleadings, motions, or correspondence to receive immediate insight on legal issues, risk areas, and
+          suggested follow-up research.</p>
+      </header>
 
-  <textarea id="documentInput" placeholder="Enter complaint, motion, or demand letter..."></textarea>
-  <button onclick="submitText()">Spot Issues</button>
+      <div class="quick-notes">
+        <strong>Pro tip:</strong>
+        <p>
+          Focus your prompt on one matter at a time for the sharpest analysis. LAWAgent highlights potential issues but
+          does not replace attorney review.
+        </p>
+      </div>
+    </section>
 
-  <h2>Spotted Issues:</h2>
-  <pre id="outputArea">Awaiting input...</pre>
+    <section>
+      <form onsubmit="handleSubmit(event)">
+        <label for="documentInput">Document excerpt</label>
+        <textarea id="documentInput" placeholder="Enter complaint, motion, or demand letter..."></textarea>
+        <button type="submit" id="submitBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          Spot Issues
+        </button>
+      </form>
 
-  <a href="index.html">← Back to Home</a>
+      <div class="output">
+        <label for="outputArea">Spotted Issues</label>
+        <pre id="outputArea">Awaiting input...</pre>
+      </div>
+
+      <nav>
+        <a href="index.html">← Back to home</a>
+        <span>Secure connection</span>
+      </nav>
+    </section>
+  </main>
 
   <script>
-    async function submitText() {
-      const inputText = document.getElementById('documentInput').value;
+    async function handleSubmit(event) {
+      event.preventDefault();
+      const textarea = document.getElementById('documentInput');
       const outputArea = document.getElementById('outputArea');
-      outputArea.textContent = "Analyzing...";
+      const button = document.getElementById('submitBtn');
 
-      const response = await fetch('https://lawagentbackend.onrender.com/spot_issues', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText })
-      });
+      const inputText = textarea.value.trim();
+      if (!inputText) {
+        outputArea.textContent = 'Please add text to analyze.';
+        textarea.focus();
+        return;
+      }
 
-      const data = await response.json();
-      outputArea.textContent = data.issues || data.detail || "Something went wrong.";
+      outputArea.textContent = 'Analyzing…';
+      button.disabled = true;
+
+      try {
+        const response = await fetch('https://lawagentbackend.onrender.com/spot_issues', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: inputText })
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        const data = await response.json();
+        outputArea.textContent = data.issues || data.detail || 'No issues returned.';
+      } catch (error) {
+        outputArea.textContent = 'Something went wrong. Please try again in a moment.';
+      } finally {
+        button.disabled = false;
+      }
     }
   </script>
 </body>
